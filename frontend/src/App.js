@@ -13,11 +13,11 @@ class App extends Component {
         <Header title={this.props.title} />
         <Router>
           <div className="all-links" bg="light" variant="light">
-              <Link className="link" to="/uploadPhoto/">Upload Photo</Link>
-              <Link className="link" to="/searchPhotos/">Search Photos</Link>
+            <Link className="link" to="/uploadPhoto/">Upload Photo</Link>
+            <Link className="link" to="/searchPhotos/">Search Photos</Link>
           </div>
           <Route path="/uploadPhoto/" exact component={UploadPhoto} />
-          <Route path="/searchPhotos/" exact component={SearchPhotos} />
+          <Route path="/searchPhotos/" exact component={() => <SearchPhotos imgNumToDisplay={100} />} />
         </Router>
       </div>
     );

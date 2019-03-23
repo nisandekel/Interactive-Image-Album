@@ -1,9 +1,9 @@
 import React from 'react';
 import './Header.css';
 
-function Header(props){
+function Header(props) {
 
-    return(
+    return (
         <div id="header">
             <h1 id="title">{props.title}</h1>
         </div>

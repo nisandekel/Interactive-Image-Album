@@ -1,61 +1,55 @@
 import React from 'react';
 import ImagesList from './ImagesList';
-import {Form,Button} from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import './SearchPhotos.css'
+import Banner from './Banner';
 
-const baseUrl = "http://localhost:3000";
 
-class SearchPhotos extends React.Component{
+class SearchPhotos extends React.Component {
 
-    state = {imgList:[], hashtags:[]};
-    allImagesFromServer=[];
+    state = { imgList: [], hashtags: "", DidFirstMount: false };
 
-    componentDidMount(){
-
-        fetch(baseUrl+"/images")
-            .then( res => res.json())
-            .then(res=> {
-                this.setState({imgList:res});
-                this.allImagesFromServer=Object.freeze(res);
+    componentDidMount() {
+        fetch(route("public/images/?results=" + this.props.imgNumToDisplay))
+            .then(res => res.json())
+            .then(res => {
+                this.setState({ imgList: res, DidFirstMount: true });
             })
-            .catch(err =>console.log(err));
+            .catch(err => console.log(err));
     }
 
     changeHashtagsInputValue = (event) => {
-        const hashtags = event.target.value.split("#");
-        this.setState({hashtags});
+        const hashtags = event.target.value;
+        this.setState({ hashtags });
     }
 
     filterCards = () => {
-        const imgList = this.allImagesFromServer.filter(img =>{
-            return isArr1ContainsArr2(img.hashtags, this.state.hashtags);
-        });
-
-        this.setState({imgList});
+        const hashtagsArr = this.state.hashtags.split("#");
+        const hashtags = hashtagsArr.join("-");
+        fetch(route("public/images/byHashtags/?hashtags=" + hashtags))
+            .then(res => res.json())
+            .then(res => this.setState({ imgList: res }));
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div id="search-photo">
                 <h4>Search photos</h4>
                 <Form>
-                    <Form.Control className="form-element text-input" onChange={this.changeHashtagsInputValue} type="text" value={this.state.hashtags.join("#")} placeholder="Enter hashtags..."/>
+                    <Form.Control className="form-element text-input" type="text" onChange={this.changeHashtagsInputValue} value={this.state.hashtags} placeholder="Enter hashtags..." />
                     <Button className="form-element" onClick={this.filterCards}>Search</Button>
                 </Form>
-                <ImagesList list={this.state.imgList}/>
+                <ImagesList DidFirstMount={this.state.DidFirstMount} list={this.state.imgList} />
+                <Banner></Banner>
             </div>
         );
     }
 }
 
-function isArr1ContainsArr2(arr1,arr2){
+const baseUrl = "http://localhost:3000";
 
-    for(let i=0;i<arr2.length;i++){
-        if(!arr1.includes(arr2[i])){
-            return false;
-        }
-    }
-    return true;
+function route(path) {
+    return baseUrl + "/" + path;
 }
 
 export default SearchPhotos;

@@ -1,0 +1,11 @@
+.invisible{
+    display:none;
+}
+
+.banner-msg{
+    width:500px;
+    font-size: 30px;
+    background-color: #E9967A;
+    border-radius: 12px;
+    text-align: center;
+}

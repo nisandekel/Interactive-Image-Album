@@ -4,17 +4,21 @@
 }
 
 .card{
-    height: 500px;
+    height: 333px;
     width: 250px;
     box-shadow: 5px 10px 8px;
 }
 
 .card-img{
-    height: 90%;
+    height: 70%;
     width: 90%;
 }
 
 .card-text{
     color: #A9A9A9;
+}
+
+.not-found-msg{
+    margin-left: 300px; 
 }
 
